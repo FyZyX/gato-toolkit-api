@@ -56,7 +56,9 @@ class DecomposeResponse(BaseModel):
 async def create_scenario(api_key: Annotated[str, Header()]) -> ScenarioResponse:
     model = gato.llm.LLM(api_key)
     gato_service = gato.service.GatoService(model)
-    scenario = gato_service.create_scenario()
+    params = gato_service.create_scenario_parameters()
+    prompt = gato_service.create_scenario_prompt(params)
+    scenario = gato_service.create_scenario(prompt)
     return ScenarioResponse(scenario=scenario)
 
 
@@ -67,7 +69,8 @@ async def create_action(
 ) -> ActionResponse:
     model = gato.llm.LLM(api_key)
     gato_service = gato.service.GatoService(model)
-    action = gato_service.create_action(request.scenario)
+    prompt = gato_service.create_action_prompt(request.scenario)
+    action = gato_service.create_action(prompt)
     return ActionResponse(action=action)
 
 
