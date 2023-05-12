@@ -58,7 +58,7 @@ async def create_scenario(api_key: Annotated[str, Header()]) -> ScenarioResponse
     gato_service = gato.service.GatoService(model)
     params = gato_service.create_scenario_parameters()
     prompt = gato_service.create_scenario_prompt(params)
-    scenario = gato_service.create_scenario(prompt)
+    scenario = await gato_service.create_scenario(prompt)
     return ScenarioResponse(scenario=scenario)
 
 
@@ -70,7 +70,7 @@ async def create_action(
     model = gato.llm.LLM(api_key)
     gato_service = gato.service.GatoService(model)
     prompt = gato_service.create_action_prompt(request.scenario)
-    action = gato_service.create_action(prompt)
+    action = await gato_service.create_action(prompt)
     return ActionResponse(action=action)
 
 
